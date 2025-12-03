@@ -1,6 +1,6 @@
 name: setbit
 description: SetBit Feature Flag SDK for Flutter. Simple, fast feature flags for mobile and web apps.
-version: 1.0.0
+version: 0.1.0
 homepage: https://setbit.io
 repository: https://github.com/setbit-io/setbit-flutter
 documentation: https://docs.setbit.io/sdks/flutter
