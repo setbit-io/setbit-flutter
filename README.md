@@ -47,7 +47,7 @@ if (await client.enabled('new-checkout')) {
   // Show new checkout flow
 }
 
-// Get experiment variant
+// Get experiment variant (result is cached for tracking)
 final variant = await client.variant('pricing-experiment');
 switch (variant) {
   case 'variant_a':
@@ -60,7 +60,7 @@ switch (variant) {
     showPrice(129); // control
 }
 
-// Track conversions
+// Track conversions (variant auto-included from cache for A/B attribution)
 await client.track(
   'purchase_completed',
   flagName: 'pricing-experiment',
@@ -150,14 +150,23 @@ Track a conversion event for analytics.
 Future<void> track(
   String eventName, {
   String? userId,                    // Optional user ID
-  String? flagName,                  // Associate with a flag
+  String? flagName,                  // Associate with a flag (auto-includes variant from cache)
   Map<String, dynamic>? metadata,    // Additional data
 })
 ```
 
+> **Note:** When you pass `flagName`, the SDK automatically includes the variant from cached evaluations for proper A/B test attribution. Make sure to call `variant()` before `track()` so the variant is in cache.
+
 Example:
 
 ```dart
+// 1. Get variant first (caches the result)
+final variant = await client.variant('signup-experiment');
+
+// 2. Show appropriate experience based on variant
+// ...
+
+// 3. Track conversion - variant is auto-included from cache
 await client.track(
   'signup_completed',
   flagName: 'signup-experiment',
